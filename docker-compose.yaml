@@ -1,8 +1,6 @@
 services:
   web:
-    build:
-      context: .
-      dockerfile: Dockerfile.web
+    image: web-image
     volumes:
       - ./web:/var/www/html
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
@@ -10,25 +8,27 @@ services:
       - 8080:80
     depends_on:
       - php-fpm
-      - db
     networks:
       - app-network
   php-fpm:
-    build:
-      context: .
-      dockerfile: Dockerfile.fpm
+    image: php-image
     volumes:
       - ./web:/var/www/html
     networks:
       - app-network
   db:
-    build:
-      context: .
-      dockerfile: Dockerfile.db
+    image: db-image
     networks:
       - app-network
     environment:
-      MYSQL_ROOT_PASSWORD: "${DB_ROOT_PASSWORD}"
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/db_secret
+    secrets: 
+      - db_secret
+
+
+secrets:
+  db_secret:
+    external: true
 
 networks:
   app-network:
