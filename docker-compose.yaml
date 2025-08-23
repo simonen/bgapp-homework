@@ -28,12 +28,6 @@ ervices:
       - app-network
     environment:
       MYSQL_ROOT_PASSWORD: "${DB_ROOT_PASSWORD}"
-#    secrets:
-#      - db_secret
-
-#secrets:
-#  db_secret:
-#    external: true
 
 networks:
   app-network:
