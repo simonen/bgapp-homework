@@ -1,11 +1,14 @@
-services:
+ervices:
   web:
     image: web-image
+    deploy:
+      mode: replicated
+      replicas: 2
     volumes:
       - ./web:/var/www/html
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
     ports:
-      - 8080:80
+      - "8080:80"
     depends_on:
       - php-fpm
     networks:
@@ -17,13 +20,16 @@ services:
     networks:
       - app-network
   db:
+    deploy:
+      replicas: 2
+      endpoint_mode: dnsrr
     image: db-image
     networks:
       - app-network
     environment:
       MYSQL_ROOT_PASSWORD: "${DB_ROOT_PASSWORD}"
-        #    secrets: 
-        #      - db_secret
+#    secrets:
+#      - db_secret
 
 #secrets:
 #  db_secret:
