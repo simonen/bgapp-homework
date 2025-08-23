@@ -27,7 +27,13 @@ services:
     networks:
       - app-network
     environment:
-      MYSQL_ROOT_PASSWORD: "${DB_ROOT_PASSWORD}"
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/db_root_password
+    secrets:
+      - db_root_password
 
 networks:
   app-network:
+
+ecrets:
+  db_root_password:
+    external: true
